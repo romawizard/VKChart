@@ -4,6 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ru.roma.vkchart.activities.SingInActivity">
+    tools:context=".app.activities.SingInActivity">
 
 </android.support.constraint.ConstraintLayout>

@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import ru.roma.vkchart.presenters.CallbackPagination;
+import javax.inject.Inject;
+
 
 /**
  * Created by Ilan on 06.03.2018.
@@ -19,7 +20,7 @@ public class Pagination<T> {
     private List<T> cash;
 
 
-
+    @Inject
     public Pagination(int capasityLoad) {
         MAX_LIMIT = capasityLoad;
         cash = new ArrayList<T>();
@@ -32,6 +33,9 @@ public class Pagination<T> {
         if (firstload) {
             cash.addAll(data);
             firstload = false;
+            for (T t : data) {
+
+            }
             success = true;
             offset = (cash.size() - 1);
 
@@ -40,14 +44,17 @@ public class Pagination<T> {
 
         int crossing = 0;
         for (T t : data) {
+
             if (cash.contains(t)) {
                 crossing++;
             }
         }
+        MyLog.log("crossing = " + crossing);
         if (crossing > 0 && crossing < MAX_LIMIT) {
             Iterator<T> iterator = data.iterator();
             while (iterator.hasNext()) {
                 T t = iterator.next();
+
                 if (cash.contains(t)) {
                     iterator.remove();
                 }
@@ -62,7 +69,7 @@ public class Pagination<T> {
             success = false;
             firstload = true;
         }
-        return cash;
+        return data;
     }
 
     public boolean isSuccess() {

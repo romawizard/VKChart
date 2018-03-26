@@ -1,13 +1,14 @@
 package ru.roma.vkchart.domain;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import java.util.List;
 
-import ru.roma.vkchart.MyApplication;
-import ru.roma.vkchart.models.DialogFromInternet;
-import ru.roma.vkchart.models.DialogModel;
-import ru.roma.vkchart.presenters.CallbackModel;
+import javax.inject.Inject;
+
+import ru.roma.vkchart.domain.providers.DeviceStateProvider;
+import ru.roma.vkchart.domain.providers.DialogsProvider;
+import ru.roma.vkchart.models.entities.Dialog;
+import ru.roma.vkchart.utils.Pagination;
+import ru.roma.vkchart.utils.dagger.Naned;
 
 /**
  * Created by Ilan on 13.03.2018.
@@ -15,40 +16,28 @@ import ru.roma.vkchart.presenters.CallbackModel;
 
 public class DialogDomain {
 
-    DialogFromInternet internetModel;
 
-    public DialogDomain() {
-        internetModel = new DialogFromInternet();
+    private DeviceStateProvider stateProvider;
+    private DialogsProvider apiProvider;
+    private DialogsProvider dbProvider;
+
+    @Inject
+    public DialogDomain(DeviceStateProvider stateProvider, @Naned("api") DialogsProvider apiProvider
+            ,@Naned("DB") DialogsProvider dbProvider) {
+        this.stateProvider = stateProvider;
+        this.apiProvider = apiProvider;
+        this.dbProvider = dbProvider;
+
     }
 
-    public void getListDialog(int lastPositionInLIst, CallbackModel callbackModel) {
+    public List<Dialog> getListDialog() throws Exception {
 
-        if (hasInternetConnection()){
-            internetModel.loadData(lastPositionInLIst,callbackModel);
+        if (stateProvider.hasInternetConection()) {
+            return apiProvider.loadData();
+        } else {
+            return dbProvider.loadData();
         }
-
 
     }
 
-
-    private boolean hasInternetConnection() {
-
-        ConnectivityManager cm = (ConnectivityManager) MyApplication.getInstance().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo wifiInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        if (wifiInfo != null && wifiInfo.isConnected())
-        {
-            return true;
-        }
-        wifiInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-        if (wifiInfo != null && wifiInfo.isConnected())
-        {
-            return true;
-        }
-        wifiInfo = cm.getActiveNetworkInfo();
-        if (wifiInfo != null && wifiInfo.isConnected())
-        {
-            return true;
-        }
-        return false;
-    }
 }
