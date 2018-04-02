@@ -1,6 +1,5 @@
 package ru.roma.vkchart.app.activities;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -10,13 +9,14 @@ import android.widget.FrameLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.roma.vkchart.R;
-import ru.roma.vkchart.ui.dialogs.FragmentDialogs;
-import ru.roma.vkchart.data.api.model_response.DialogModelResponse;
+import ru.roma.vkchart.ui.dialogs.DialogsFragment;
+import ru.roma.vkchart.ui.messages.MessageFragment;
 import ru.roma.vkchart.utils.MyLog;
 
-public class MainActivity extends AppCompatActivity  implements FragmentDialogs.OnFragmentInteractionListener{
+public class MainActivity extends AppCompatActivity  implements DialogsFragment.OnFragmentInteractionListener{
 
-    private static final String FRAGMENT_DIALOG = "fragmentDialogs" ;
+    private static final String FRAGMENT_DIALOG = "fragmentDialogs";
+    private static final String FRAGMENT_MESSAGE = "fragmentMessage";
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.frame_layout)
@@ -24,7 +24,8 @@ public class MainActivity extends AppCompatActivity  implements FragmentDialogs.
     @BindView(R.id.fab)
     FloatingActionButton fab;
 
-    FragmentDialogs fragmentDialog;
+    private DialogsFragment dialogFragment;
+    private MessageFragment  messageFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,17 +51,25 @@ public class MainActivity extends AppCompatActivity  implements FragmentDialogs.
     private void loadFragment (){
 
         android.support.v4.app.FragmentTransaction fTran = getSupportFragmentManager().beginTransaction();
-        fragmentDialog = (FragmentDialogs) getSupportFragmentManager().findFragmentByTag(FRAGMENT_DIALOG);
-        if (fragmentDialog == null) {
-            MyLog.log("null in FragmentDialogs");
-            fragmentDialog = new FragmentDialogs();
+        dialogFragment = (DialogsFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENT_DIALOG);
+        if (dialogFragment == null) {
+            MyLog.log("null in DialogsFragment");
+            dialogFragment = new DialogsFragment();
         }
-        fTran.replace(R.id.frame_layout, fragmentDialog, FRAGMENT_DIALOG).commit();
+        fTran.replace(R.id.frame_layout, dialogFragment, FRAGMENT_DIALOG).commit();
 
     }
 
     @Override
-    public void onFragmentInteraction(Uri uri) {
+    public void onFragmentInteraction(int userId) {
+        android.support.v4.app.FragmentTransaction fTran = getSupportFragmentManager().beginTransaction();
+        messageFragment = (MessageFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENT_MESSAGE);
+        if (messageFragment == null) {
+            MyLog.log("null in DialogsFragment");
+            messageFragment = MessageFragment.newInstance(userId);
+        }
+        fTran.replace(R.id.frame_layout, messageFragment, FRAGMENT_MESSAGE).commit();
+
 
     }
 }

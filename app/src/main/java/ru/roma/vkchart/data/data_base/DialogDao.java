@@ -9,7 +9,7 @@ import android.arch.persistence.room.Update;
 
 import java.util.List;
 
-import ru.roma.vkchart.models.entities.Dialog;
+import ru.roma.vkchart.domain.entities.Dialog;
 
 /**
  * Created by Ilan on 14.03.2018.
@@ -27,7 +27,7 @@ public interface DialogDao {
     void insert(Dialog employee);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(List<Dialog> dialogsHolders);
+    void insert(List<Dialog> dialogs);
 
     @Update
     void update(Dialog employee);

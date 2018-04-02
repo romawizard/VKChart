@@ -1,8 +1,8 @@
-package ru.roma.vkchart.models.entities;
+package ru.roma.vkchart.domain.entities;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
-import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
 import java.util.List;
 
@@ -12,10 +12,10 @@ import ru.roma.vkchart.data.api.model_response.Attachment;
  * Created by Ilan on 03.03.2018.
  */
 
-@Entity
+@Entity(primaryKeys = {"userId", "chartId"})
 public class Dialog {
 
-    @PrimaryKey
+    @NonNull
     private Integer userId;
     private Integer online;
     private Integer out;
@@ -24,6 +24,7 @@ public class Dialog {
     private Integer userCount;
     private Integer date;
     private Integer adminId;
+    @NonNull
     private Integer chartId;
     private String firstName;
     private String lastName;

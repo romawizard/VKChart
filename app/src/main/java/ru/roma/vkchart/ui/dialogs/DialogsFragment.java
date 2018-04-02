@@ -1,7 +1,6 @@
 package ru.roma.vkchart.ui.dialogs;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
@@ -10,7 +9,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.Toast;
@@ -21,12 +19,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import ru.roma.vkchart.R;
-import ru.roma.vkchart.models.entities.Dialog;
+import ru.roma.vkchart.domain.entities.Dialog;
+import ru.roma.vkchart.ui.View;
 import ru.roma.vkchart.ui.adapters.DialogsAdapter;
 import ru.roma.vkchart.utils.MyLog;
 
 
-public class FragmentDialogs extends Fragment implements SwipeRefreshLayout.OnRefreshListener, ViewDialog {
+public class DialogsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, View<Dialog> {
 
 
     RecyclerView listDialogs;
@@ -41,44 +40,44 @@ public class FragmentDialogs extends Fragment implements SwipeRefreshLayout.OnRe
 
     private Parcelable recycleViewState;
 
-    private DialogFragmentPresenter presenter;
+    private DialogPresenter presenter;
 
     private OnFragmentInteractionListener mListener;
 
     private DialogsAdapter adapter;
 
 
-    public FragmentDialogs() {
-    }
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        MyLog.log("onCreate() FragmentDialogs");
+        MyLog.log("onCreate() DialogsFragment");
 
         setRetainInstance(true);
 
-        presenter = new DialogFragmentPresenter(this);
+        presenter = new DialogPresenter(this);
         adapter = new DialogsAdapter();
+        adapter.setOnItemClickListener(new DialogsAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Dialog dialog) {
+                mListener.onFragmentInteraction(dialog.getUserId());
+            }
+        });
 
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public android.view.View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                          Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_fragment_dialogs, container, false);
+        android.view.View view = inflater.inflate(R.layout.fragment_fragment_dialogs, container, false);
         unbinder = ButterKnife.bind(this, view);
 
         listDialogs = view.findViewById(R.id.list_dialogs);
 
-
         initilializeRecycleList(listDialogs);
 
         if (recycleViewState != null) {
-
             listDialogs.getLayoutManager().onRestoreInstanceState(recycleViewState);
         }
         return view;
@@ -88,6 +87,8 @@ public class FragmentDialogs extends Fragment implements SwipeRefreshLayout.OnRe
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        presenter.ready();
+
         if (firstCreate) {
             presenter.getDialogs();
             firstCreate = false;
@@ -96,7 +97,7 @@ public class FragmentDialogs extends Fragment implements SwipeRefreshLayout.OnRe
 
     @Override
     public void onResume() {
-        MyLog.log("onResume  FragmentDialogs");
+        MyLog.log("onResume  DialogsFragment");
         super.onResume();
     }
 
@@ -167,9 +168,9 @@ public class FragmentDialogs extends Fragment implements SwipeRefreshLayout.OnRe
     }
 
     @Override
-    public void updateList(List<Dialog> dataDialogs) {
+    public void updateList(List<Dialog> list) {
 
-        adapter.setDialogs(dataDialogs);
+        adapter.setListDialogs(list);
     }
 
     @Override
@@ -179,7 +180,6 @@ public class FragmentDialogs extends Fragment implements SwipeRefreshLayout.OnRe
 
 
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onFragmentInteraction(int userId);
     }
 }

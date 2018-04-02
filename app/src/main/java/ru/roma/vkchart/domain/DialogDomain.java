@@ -4,10 +4,10 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import ru.roma.vkchart.data.data_base.DataBaseWorker;
+import ru.roma.vkchart.domain.providers.ApiProvider;
 import ru.roma.vkchart.domain.providers.DeviceStateProvider;
-import ru.roma.vkchart.domain.providers.DialogsProvider;
-import ru.roma.vkchart.models.entities.Dialog;
-import ru.roma.vkchart.utils.Pagination;
+import ru.roma.vkchart.domain.entities.Dialog;
 import ru.roma.vkchart.utils.dagger.Naned;
 
 /**
@@ -18,12 +18,12 @@ public class DialogDomain {
 
 
     private DeviceStateProvider stateProvider;
-    private DialogsProvider apiProvider;
-    private DialogsProvider dbProvider;
+    private ApiProvider apiProvider;
+    private ApiProvider dbProvider;
 
     @Inject
-    public DialogDomain(DeviceStateProvider stateProvider, @Naned("api") DialogsProvider apiProvider
-            ,@Naned("DB") DialogsProvider dbProvider) {
+    public DialogDomain(DeviceStateProvider stateProvider, @Naned("api") ApiProvider apiProvider
+            ,@Naned("DB") ApiProvider dbProvider) {
         this.stateProvider = stateProvider;
         this.apiProvider = apiProvider;
         this.dbProvider = dbProvider;
@@ -33,9 +33,11 @@ public class DialogDomain {
     public List<Dialog> getListDialog() throws Exception {
 
         if (stateProvider.hasInternetConection()) {
-            return apiProvider.loadData();
+             List<Dialog> dialogs =  apiProvider.getListDialogs();
+
+            return dialogs;
         } else {
-            return dbProvider.loadData();
+            return dbProvider.getListDialogs();
         }
 
     }

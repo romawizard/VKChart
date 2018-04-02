@@ -16,9 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import ru.roma.vkchart.app.MyApplication;
 import ru.roma.vkchart.R;
-import ru.roma.vkchart.models.entities.Dialog;
+import ru.roma.vkchart.app.MyApplication;
+import ru.roma.vkchart.domain.entities.Dialog;
 import ru.roma.vkchart.utils.MyLog;
 import ru.roma.vkchart.utils.TimeHalper;
 
@@ -30,10 +30,9 @@ import ru.roma.vkchart.utils.TimeHalper;
 public class DialogsAdapter extends RecyclerView.Adapter<DialogsAdapter.ViewHolderDialog> {
 
     private List<Dialog> dialogses;
-
-
-    int colorLightBlue;
+    private OnItemClickListener listener;
     private int colorWhite;
+    private int colorLightBlue;
 
     public DialogsAdapter() {
         dialogses = new ArrayList<>();
@@ -61,14 +60,22 @@ public class DialogsAdapter extends RecyclerView.Adapter<DialogsAdapter.ViewHold
         return dialogses == null ? 0 : dialogses.size();
     }
 
-    public void setDialogs(List<Dialog> list) {
-        dialogses.addAll(list);
+    public void setListDialogs(List<Dialog> list) {
+        dialogses = list;
         notifyDataSetChanged();
         MyLog.log("list size adapter = " + dialogses.size());
     }
 
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
 
-    public class ViewHolderDialog extends RecyclerView.ViewHolder {
+    public interface OnItemClickListener {
+        void onItemClick(Dialog dialog);
+    }
+
+
+    public class ViewHolderDialog extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView name, text, time;
         CircleImageView photoDialog, photoOwner;
@@ -82,9 +89,10 @@ public class DialogsAdapter extends RecyclerView.Adapter<DialogsAdapter.ViewHold
             name = itemView.findViewById(R.id.name_dialog);
             text = itemView.findViewById(R.id.text_dialog);
             time = itemView.findViewById(R.id.time_dialog);
-            cardView =itemView.findViewById(R.id.item_dialog_card);
+            cardView = itemView.findViewById(R.id.item_dialog_card);
             unread = itemView.findViewById(R.id.unread);
 
+            itemView.setOnClickListener(this);
         }
 
         public void bind(Dialog dialog) {
@@ -104,20 +112,18 @@ public class DialogsAdapter extends RecyclerView.Adapter<DialogsAdapter.ViewHold
 
         private void checkReadState(Dialog dialog) {
 
-            if (dialog.getReadState() == 0){
+            if (dialog.getReadState() == 0) {
 //                собщение не прочитано
 
-                if (dialog.getOut()  == 1){
+                if (dialog.getOut() == 1) {
 //                    сообщение отправлено владельцем
                     unread.setVisibility(View.VISIBLE);
                     cardView.setCardBackgroundColor(colorWhite);
-                }
-                else{
+                } else {
                     unread.setVisibility(View.GONE);
                     cardView.setCardBackgroundColor(colorLightBlue);
                 }
-            }
-            else {
+            } else {
                 cardView.setCardBackgroundColor(colorWhite);
                 unread.setVisibility(View.GONE);
             }
@@ -177,7 +183,19 @@ public class DialogsAdapter extends RecyclerView.Adapter<DialogsAdapter.ViewHold
 
             name.setText(sb.toString());
         }
-    }
 
+        @Override
+        public void onClick(View view) {
+
+            MyLog.log("onClick DialogAdapter");
+            int position = getAdapterPosition();
+            if (position != RecyclerView.NO_POSITION) {
+                if (listener != null) {
+                    listener.onItemClick(dialogses.get(position));
+
+                }
+            }
+        }
+    }
 
 }

@@ -14,11 +14,8 @@ import ru.roma.vkchart.app.activities.SingInActivity;
 import ru.roma.vkchart.data.api.ApiQuery;
 import ru.roma.vkchart.data.data_base.DialogDataBase;
 import ru.roma.vkchart.utils.MyLog;
-import ru.roma.vkchart.utils.dagger.ApiProvidermModule;
-import ru.roma.vkchart.utils.dagger.DaggerDialogComponent;
-import ru.roma.vkchart.utils.dagger.DbProviderModule;
-import ru.roma.vkchart.utils.dagger.DialogComponent;
-import ru.roma.vkchart.utils.dagger.StateModule;
+import ru.roma.vkchart.utils.dagger.DaggerAppComponent;
+import ru.roma.vkchart.utils.dagger.AppComponent;
 
 /**
  * Created by Ilan on 20.02.2018.
@@ -27,16 +24,16 @@ import ru.roma.vkchart.utils.dagger.StateModule;
 public class MyApplication extends Application {
 
     private static MyApplication instance;
-    private static ApiQuery query;
-    private static DialogDataBase dataBase;
-    private DialogComponent component;
+    private ApiQuery query;
+    private DialogDataBase dataBase;
+    private AppComponent appComponent;
     private VKAccessTokenTracker vkAccessTokenTracker;
 
     public static MyApplication getInstance() {
         return instance;
     }
 
-    public static ApiQuery getQuery() {
+    public ApiQuery getQuery() {
         return query;
     }
 
@@ -54,11 +51,7 @@ public class MyApplication extends Application {
 
         dataBase = Room.databaseBuilder(this,DialogDataBase.class,"dataBase").build();
 
-        component = DaggerDialogComponent.builder()
-                .apiProvidermModule(new ApiProvidermModule())
-                .dbProviderModule(new DbProviderModule())
-                .stateModule(new StateModule())
-                .build();
+        appComponent = DaggerAppComponent.create();
     }
 
     private VKAccessTokenTracker getVkAccessTokenTracker() {
@@ -93,11 +86,11 @@ public class MyApplication extends Application {
 
     }
 
-    public static DialogDataBase getDataBase() {
+    public  DialogDataBase getDataBase() {
         return dataBase;
     }
 
-    public DialogComponent getComponent() {
-        return component;
+    public AppComponent getAppComponent() {
+        return appComponent;
     }
 }
