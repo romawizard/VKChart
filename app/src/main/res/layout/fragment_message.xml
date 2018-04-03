@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ru.roma.vkchart.ui.dialogs.DialogsFragment"
+    tools:context="ru.roma.vkchart.ui.fragment.DialogsFragment"
     android:id="@+id/frame_layout_dialog">
 
     <android.support.v4.widget.SwipeRefreshLayout

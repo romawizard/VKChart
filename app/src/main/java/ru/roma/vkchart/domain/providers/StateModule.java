@@ -1,9 +1,7 @@
-package ru.roma.vkchart.utils.dagger;
+package ru.roma.vkchart.domain.providers;
 
 import dagger.Module;
 import dagger.Provides;
-import ru.roma.vkchart.domain.providers.CheckIntennet;
-import ru.roma.vkchart.domain.providers.DeviceStateProvider;
 
 /**
  * Created by Ilan on 25.03.2018.

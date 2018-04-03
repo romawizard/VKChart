@@ -1,4 +1,4 @@
-package ru.roma.vkchart.utils.dagger;
+package ru.roma.vkchart.domain.usecase;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;

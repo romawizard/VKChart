@@ -1,4 +1,4 @@
-package ru.roma.vkchart.ui.dialogs;
+package ru.roma.vkchart.ui.presenter;
 
 
 
@@ -9,11 +9,11 @@ import javax.inject.Inject;
 import io.reactivex.Observer;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
-import ru.roma.vkchart.app.MyApplication;
+import ru.roma.vkchart.ui.MyApplication;
 import ru.roma.vkchart.domain.entities.Dialog;
 import ru.roma.vkchart.domain.usecase.AsynUseCase;
 import ru.roma.vkchart.domain.usecase.LoadDialogsUseCase;
-import ru.roma.vkchart.ui.View;
+import ru.roma.vkchart.ui.fragment.View;
 
 
 /**

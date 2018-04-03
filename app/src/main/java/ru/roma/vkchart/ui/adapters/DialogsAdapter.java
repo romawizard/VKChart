@@ -17,7 +17,7 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import ru.roma.vkchart.R;
-import ru.roma.vkchart.app.MyApplication;
+import ru.roma.vkchart.ui.MyApplication;
 import ru.roma.vkchart.domain.entities.Dialog;
 import ru.roma.vkchart.utils.MyLog;
 import ru.roma.vkchart.utils.TimeHalper;

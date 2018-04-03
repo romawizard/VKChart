@@ -1,4 +1,4 @@
-package ru.roma.vkchart.app.activities;
+package ru.roma.vkchart.ui.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;

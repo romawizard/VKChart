@@ -4,9 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import javax.inject.Inject;
-
-import ru.roma.vkchart.app.MyApplication;
+import ru.roma.vkchart.ui.MyApplication;
 
 /**
  * Created by Ilan on 24.03.2018.

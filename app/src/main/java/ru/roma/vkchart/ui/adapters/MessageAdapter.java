@@ -1,23 +1,15 @@
 package ru.roma.vkchart.ui.adapters;
 
 import android.content.Context;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
 
 import java.util.List;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import ru.roma.vkchart.R;
-import ru.roma.vkchart.app.MyApplication;
-import ru.roma.vkchart.domain.entities.Dialog;
 import ru.roma.vkchart.domain.entities.Message;
 import ru.roma.vkchart.utils.MyLog;
 import ru.roma.vkchart.utils.TimeHalper;
@@ -54,17 +46,51 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
     public class ViewHolderMessage extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView msgLeft, msgRight;
+        TextView msgLeft, msgRight, timeLeft, timeRight;
+        TimeHalper timeHelper;
 
 
         public ViewHolderMessage(View itemView) {
             super(itemView);
+            timeHelper = new TimeHalper();
             msgLeft = itemView.findViewById(R.id.msg_left);
             msgRight = itemView.findViewById(R.id.msg_right);
+            timeLeft = itemView.findViewById(R.id.time_left);
+            timeRight = itemView.findViewById(R.id.time_right);
         }
 
         public void bind(Message message) {
-            msgLeft.setText(message.getBody());
+            showListMessage(message);
+            showTime(message);
+        }
+
+        private void showTime(Message message) {
+
+            int out = message.getOut();
+            if (out == 1){
+                timeRight.setVisibility(View.VISIBLE);
+                timeRight.setText(timeHelper.getTime(message.getDate()));
+                timeLeft.setVisibility(View.GONE);
+            }
+            else {
+                timeLeft.setVisibility(View.VISIBLE);
+                timeLeft.setText(timeHelper.getTime(message.getDate()));
+                timeRight.setVisibility(View.GONE);
+            }
+        }
+
+        private void showListMessage(Message message) {
+
+            int out = message.getOut();
+            if (out == 1){
+                msgRight.setVisibility(View.VISIBLE);
+                msgRight.setText(message.getBody());
+                msgLeft.setVisibility(View.GONE);
+            }else {
+                msgLeft.setVisibility(View.VISIBLE);
+                msgLeft.setText(message.getBody());
+                msgRight.setVisibility(View.GONE);
+            }
         }
 
         @Override

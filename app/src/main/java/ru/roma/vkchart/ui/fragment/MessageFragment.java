@@ -1,4 +1,4 @@
-package ru.roma.vkchart.ui.messages;
+package ru.roma.vkchart.ui.fragment;
 
 
 import android.os.Bundle;
@@ -14,19 +14,19 @@ import android.widget.Toast;
 
 import java.util.List;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import ru.roma.vkchart.R;
 import ru.roma.vkchart.domain.entities.Message;
 import ru.roma.vkchart.ui.adapters.MessageAdapter;
+import ru.roma.vkchart.ui.presenter.MessagePresenter;
 import ru.roma.vkchart.utils.MyLog;
 
 
-public class MessageFragment extends Fragment implements ru.roma.vkchart.ui.View<Message> {
+public class MessageFragment extends Fragment implements ru.roma.vkchart.ui.fragment.View<Message> {
 
     private static final String USER_ID = "userId";
-//    @BindView(R.id.list_messages)
+    //    @BindView(R.id.list_messages)
     RecyclerView listMessages;
     Unbinder unbinder;
     private int userId;
@@ -105,6 +105,7 @@ public class MessageFragment extends Fragment implements ru.roma.vkchart.ui.View
         unbinder.unbind();
         recycleViewState = listMessages.getLayoutManager().onSaveInstanceState();
     }
+
     private void initilializeRecycleList(RecyclerView list) {
         final LinearLayoutManager lm = new LinearLayoutManager(getContext());
         lm.setOrientation(LinearLayoutManager.VERTICAL);
@@ -118,12 +119,13 @@ public class MessageFragment extends Fragment implements ru.roma.vkchart.ui.View
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 super.onScrolled(recyclerView, dx, dy);
-                int visibleItemCount        = lm.getChildCount();
-                int totalItemCount          = lm.getItemCount();
-                int firstVisibleItemPosition= lm.findFirstVisibleItemPosition();
+                int visibleItemCount = lm.getChildCount();
+                int totalItemCount = lm.getItemCount();
+                int firstVisibleItemPosition = lm.findFirstVisibleItemPosition();
 
                 // Load more if we have reach the end to the recyclerView
-                if ( (visibleItemCount + firstVisibleItemPosition) >= totalItemCount && firstVisibleItemPosition >= 0) {
+                if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount && firstVisibleItemPosition >= 0) {
+                    MyLog.log("TROUBLE");
                     presenter.getMessages(userId);
                 }
             }

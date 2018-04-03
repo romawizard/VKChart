@@ -1,4 +1,4 @@
-package ru.roma.vkchart.utils.dagger;
+package ru.roma.vkchart.domain.usecase;
 
 import java.util.List;
 
@@ -8,8 +8,6 @@ import ru.roma.vkchart.domain.datacource.DataSource;
 import ru.roma.vkchart.domain.datacource.DataSourceLessArgument;
 import ru.roma.vkchart.domain.entities.Dialog;
 import ru.roma.vkchart.domain.entities.Message;
-import ru.roma.vkchart.domain.usecase.LoadDialogsUseCase;
-import ru.roma.vkchart.domain.usecase.LoadMessageUseCase;
 
 /**
  * Created by Ilan on 31.03.2018.

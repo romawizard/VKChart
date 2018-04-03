@@ -91,4 +91,37 @@ public class Message {
     public void setAttachments(List<Attachment> attachments) {
         this.attachments = attachments;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Message message = (Message) o;
+
+        if (!getUserId().equals(message.getUserId())) return false;
+        if (!getFromId().equals(message.getFromId())) return false;
+        if (!getDate().equals(message.getDate())) return false;
+        return getBody().equals(message.getBody());
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getUserId().hashCode();
+        result = 31 * result + getFromId().hashCode();
+        result = 31 * result + getDate().hashCode();
+        result = 31 * result + getBody().hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                "userId=" + userId +
+                ", fromId=" + fromId +
+                ", date=" + date +
+                ", body='" + body + '\'' +
+                '}';
+    }
 }

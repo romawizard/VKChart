@@ -1,9 +1,7 @@
-package ru.roma.vkchart.utils.dagger;
+package ru.roma.vkchart.domain.usecase;
 
 import dagger.Module;
 import dagger.Provides;
-import ru.roma.vkchart.domain.usecase.AsynUseCase;
-import ru.roma.vkchart.domain.usecase.RxAsynUseCase;
 
 /**
  * Created by Ilan on 02.04.2018.

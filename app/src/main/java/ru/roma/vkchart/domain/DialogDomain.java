@@ -4,11 +4,10 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import ru.roma.vkchart.data.data_base.DataBaseWorker;
 import ru.roma.vkchart.domain.providers.ApiProvider;
 import ru.roma.vkchart.domain.providers.DeviceStateProvider;
 import ru.roma.vkchart.domain.entities.Dialog;
-import ru.roma.vkchart.utils.dagger.Naned;
+import ru.roma.vkchart.domain.usecase.Naned;
 
 /**
  * Created by Ilan on 13.03.2018.

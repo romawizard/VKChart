@@ -1,4 +1,4 @@
-package ru.roma.vkchart.ui.dialogs;
+package ru.roma.vkchart.ui.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -20,8 +20,8 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import ru.roma.vkchart.R;
 import ru.roma.vkchart.domain.entities.Dialog;
-import ru.roma.vkchart.ui.View;
 import ru.roma.vkchart.ui.adapters.DialogsAdapter;
+import ru.roma.vkchart.ui.presenter.DialogPresenter;
 import ru.roma.vkchart.utils.MyLog;
 
 

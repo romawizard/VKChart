@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.roma.vkchart.app.MyApplication;
+import ru.roma.vkchart.ui.MyApplication;
 import ru.roma.vkchart.data.api.model_response.ItemMessage;
 import ru.roma.vkchart.data.api.model_response.MessageModelResponse;
 import ru.roma.vkchart.domain.providers.ApiProvider;

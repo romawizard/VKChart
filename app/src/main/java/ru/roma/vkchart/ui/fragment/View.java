@@ -1,4 +1,4 @@
-package ru.roma.vkchart.ui;
+package ru.roma.vkchart.ui.fragment;
 
 import java.util.List;
 

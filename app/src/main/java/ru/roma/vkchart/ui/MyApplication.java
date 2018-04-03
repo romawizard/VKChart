@@ -1,4 +1,4 @@
-package ru.roma.vkchart.app;
+package ru.roma.vkchart.ui;
 
 import android.app.Application;
 import android.arch.persistence.room.Room;
@@ -10,12 +10,12 @@ import com.vk.sdk.VKSdk;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import ru.roma.vkchart.app.activities.SingInActivity;
+import ru.roma.vkchart.ui.activities.SingInActivity;
 import ru.roma.vkchart.data.api.ApiQuery;
 import ru.roma.vkchart.data.data_base.DialogDataBase;
 import ru.roma.vkchart.utils.MyLog;
-import ru.roma.vkchart.utils.dagger.DaggerAppComponent;
-import ru.roma.vkchart.utils.dagger.AppComponent;
+import ru.roma.vkchart.domain.usecase.DaggerAppComponent;
+import ru.roma.vkchart.domain.usecase.AppComponent;
 
 /**
  * Created by Ilan on 20.02.2018.

@@ -1,4 +1,4 @@
-package ru.roma.vkchart.app.activities;
+package ru.roma.vkchart.ui.activities;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -9,8 +9,8 @@ import android.widget.FrameLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.roma.vkchart.R;
-import ru.roma.vkchart.ui.dialogs.DialogsFragment;
-import ru.roma.vkchart.ui.messages.MessageFragment;
+import ru.roma.vkchart.ui.fragment.DialogsFragment;
+import ru.roma.vkchart.ui.fragment.MessageFragment;
 import ru.roma.vkchart.utils.MyLog;
 
 public class MainActivity extends AppCompatActivity  implements DialogsFragment.OnFragmentInteractionListener{
@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity  implements DialogsFragment.
         if (dialogFragment == null) {
             MyLog.log("null in DialogsFragment");
             dialogFragment = new DialogsFragment();
+
         }
         fTran.replace(R.id.frame_layout, dialogFragment, FRAGMENT_DIALOG).commit();
 
@@ -65,9 +66,10 @@ public class MainActivity extends AppCompatActivity  implements DialogsFragment.
         android.support.v4.app.FragmentTransaction fTran = getSupportFragmentManager().beginTransaction();
         messageFragment = (MessageFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENT_MESSAGE);
         if (messageFragment == null) {
-            MyLog.log("null in DialogsFragment");
+            MyLog.log("null in MessageFragment");
             messageFragment = MessageFragment.newInstance(userId);
         }
+        fTran.addToBackStack(FRAGMENT_MESSAGE);
         fTran.replace(R.id.frame_layout, messageFragment, FRAGMENT_MESSAGE).commit();
 
 
