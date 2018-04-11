@@ -1,13 +1,9 @@
 package ru.roma.vkchart.data.api;
 
 
-import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,7 +60,7 @@ public class DialogFromInternet implements ApiProvider {
     public List<ru.roma.vkchart.domain.entities.Message> getListMessages(int userId) throws Exception {
 
         MyLog.log("messages offset = " +messagePagination.getOffset());
-        MessageModelResponse response = MyApplication.getInstance().getQuery().getMwsages(userId,messagePagination.getOffset(),token)
+        MessageModelResponse response = MyApplication.getInstance().getQuery().getMessages(userId,messagePagination.getOffset(),token)
                 .execute().body();
         return messagePagination.next(parseToMessage(response));
     }
@@ -74,13 +70,13 @@ public class DialogFromInternet implements ApiProvider {
 
         String text = message.getBody();
         int id = message.getUserId();
-
-        try {
-            text = URLEncoder.encode(text, "utf-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            MyLog.log("кодировка не прошла");
-        }
+//
+//        try {
+//            text = URLEncoder.encode(text, "utf-8");
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//            MyLog.log("кодировка не прошла");
+//        }
 
         MyLog.log("send message = " );
         SendMessageModelresponse response = MyApplication.getInstance().getQuery().sendMessage(id,text,token)
