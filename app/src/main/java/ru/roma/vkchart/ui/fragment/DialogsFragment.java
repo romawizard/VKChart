@@ -6,6 +6,8 @@ import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,6 +22,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import ru.roma.vkchart.R;
 import ru.roma.vkchart.domain.entities.Dialog;
+import ru.roma.vkchart.ui.activities.MainActivity;
 import ru.roma.vkchart.ui.adapters.DialogsAdapter;
 import ru.roma.vkchart.ui.presenter.DialogPresenter;
 import ru.roma.vkchart.utils.MyLog;
@@ -27,11 +30,8 @@ import ru.roma.vkchart.utils.MyLog;
 
 public class DialogsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, View<Dialog> {
 
-
+    @BindView(R.id.list_dialogs)
     RecyclerView listDialogs;
-
-    @BindView(R.id.swiperefresh)
-    SwipeRefreshLayout swiperefresh;
     Unbinder unbinder;
     @BindView(R.id.frame_layout_dialog)
     FrameLayout frameLayoutDialog;
@@ -60,7 +60,14 @@ public class DialogsFragment extends Fragment implements SwipeRefreshLayout.OnRe
         adapter.setOnItemClickListener(new DialogsAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Dialog dialog) {
-                mListener.onFragmentInteraction(dialog.getUserId());
+
+                Bundle user = new Bundle();
+                user.putInt("userId",dialog.getUserId());
+                user.putString("userName",dialog.getUserName());
+                user.putString("photo",dialog.getPhoto100());
+                user.putInt("online",dialog.getOnline());
+
+                mListener.onFragmentInteraction(user);
             }
         });
 
@@ -72,8 +79,6 @@ public class DialogsFragment extends Fragment implements SwipeRefreshLayout.OnRe
 
         android.view.View view = inflater.inflate(R.layout.fragment_fragment_dialogs, container, false);
         unbinder = ButterKnife.bind(this, view);
-
-        listDialogs = view.findViewById(R.id.list_dialogs);
 
         initilializeRecycleList(listDialogs);
 
@@ -127,8 +132,8 @@ public class DialogsFragment extends Fragment implements SwipeRefreshLayout.OnRe
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
         recycleViewState = listDialogs.getLayoutManager().onSaveInstanceState();
+        unbinder.unbind();
     }
 
     @Override
@@ -180,6 +185,6 @@ public class DialogsFragment extends Fragment implements SwipeRefreshLayout.OnRe
 
 
     public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(int userId);
+        void onFragmentInteraction(Bundle user);
     }
 }

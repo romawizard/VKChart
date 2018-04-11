@@ -7,10 +7,11 @@ import javax.inject.Inject;
 import io.reactivex.Observer;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
-import ru.roma.vkchart.ui.MyApplication;
 import ru.roma.vkchart.domain.entities.Message;
 import ru.roma.vkchart.domain.usecase.AsynUseCase;
 import ru.roma.vkchart.domain.usecase.LoadMessageUseCase;
+import ru.roma.vkchart.domain.usecase.SendMessageUseCase;
+import ru.roma.vkchart.ui.MyApplication;
 import ru.roma.vkchart.ui.fragment.View;
 
 /**
@@ -23,6 +24,8 @@ public class MessagePresenter {
     LoadMessageUseCase loadMessageUseCase;
     @Inject
     AsynUseCase asynUseCase;
+    @Inject
+    SendMessageUseCase sendmessageUseCase;
     private View view;
     private boolean loading = false;
 
@@ -44,14 +47,18 @@ public class MessagePresenter {
 
                 @Override
                 public void onNext(@NonNull List<Message> messages) {
-                    view.updateList(messages);
+                    if (view != null) {
+                        view.updateList(messages);
+                    }
                     loading = false;
                 }
 
                 @Override
                 public void onError(@NonNull Throwable e) {
                     e.printStackTrace();
-                    view.showError("ошибка при загрузке сообщений");
+                    if (view != null) {
+                        view.showError("ошибка при загрузке сообщений");
+                    }
                     loading = false;
                 }
 
@@ -66,5 +73,36 @@ public class MessagePresenter {
 
     public void detach() {
         view = null;
+    }
+
+    public void sendMessage(Message message) {
+        if (!loading){
+            loading = true;
+            asynUseCase.wrap(sendmessageUseCase,message).subscribe(new Observer<Integer>() {
+                @Override
+                public void onSubscribe(@NonNull Disposable d) {
+
+                }
+
+                @Override
+                public void onNext(@NonNull Integer integer) {
+                    view.showError("send Message = " + integer);
+                    loading = false;
+                }
+
+                @Override
+                public void onError(@NonNull Throwable e) {
+                    e.printStackTrace();
+                    view.showError("ощибка при отправке сообщения");
+                    loading = false;
+
+                }
+
+                @Override
+                public void onComplete() {
+                    loading = false;
+                }
+            });
+        }
     }
 }

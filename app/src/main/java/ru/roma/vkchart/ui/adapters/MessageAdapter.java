@@ -5,12 +5,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.Collections;
 import java.util.List;
 
 import ru.roma.vkchart.R;
 import ru.roma.vkchart.domain.entities.Message;
+import ru.roma.vkchart.utils.MessageDateComparator;
 import ru.roma.vkchart.utils.MyLog;
 import ru.roma.vkchart.utils.TimeHalper;
 
@@ -39,15 +43,26 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         return messages == null ? 0 : messages.size();
     }
     public void setListMesages(List<Message> list) {
-        messages = list;
+        if (list != null) {
+            messages = list;
+            notifyDataSetChanged();
+            MyLog.log("list size adapter Messages = " + messages.size());
+        }
+    }
+
+    public void addMessage(Message message) {
+        messages.add(message);
+        Collections.sort(messages, new MessageDateComparator());
         notifyDataSetChanged();
-        MyLog.log("list size adapter Messages = " + messages.size());
+        MyLog.log("add message to adapter time = " + message.getDate());
     }
 
     public class ViewHolderMessage extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView msgLeft, msgRight, timeLeft, timeRight;
         TimeHalper timeHelper;
+        RelativeLayout mainLeft;
+        LinearLayout mainRight;
 
 
         public ViewHolderMessage(View itemView) {
@@ -57,39 +72,28 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             msgRight = itemView.findViewById(R.id.msg_right);
             timeLeft = itemView.findViewById(R.id.time_left);
             timeRight = itemView.findViewById(R.id.time_right);
+            mainLeft = itemView.findViewById(R.id.main_left);
+            mainRight = itemView.findViewById(R.id.main_right);
         }
 
         public void bind(Message message) {
             showListMessage(message);
-            showTime(message);
         }
 
-        private void showTime(Message message) {
-
-            int out = message.getOut();
-            if (out == 1){
-                timeRight.setVisibility(View.VISIBLE);
-                timeRight.setText(timeHelper.getTime(message.getDate()));
-                timeLeft.setVisibility(View.GONE);
-            }
-            else {
-                timeLeft.setVisibility(View.VISIBLE);
-                timeLeft.setText(timeHelper.getTime(message.getDate()));
-                timeRight.setVisibility(View.GONE);
-            }
-        }
 
         private void showListMessage(Message message) {
 
             int out = message.getOut();
             if (out == 1){
-                msgRight.setVisibility(View.VISIBLE);
+                mainRight.setVisibility(View.VISIBLE);
                 msgRight.setText(message.getBody());
-                msgLeft.setVisibility(View.GONE);
+                timeRight.setText(timeHelper.getTime(message.getDate()));
+                mainLeft.setVisibility(View.GONE);
             }else {
-                msgLeft.setVisibility(View.VISIBLE);
+                mainLeft.setVisibility(View.VISIBLE);
                 msgLeft.setText(message.getBody());
-                msgRight.setVisibility(View.GONE);
+                timeLeft.setText(timeHelper.getTime(message.getDate()));
+                mainRight.setVisibility(View.GONE);
             }
         }
 

@@ -18,4 +18,15 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="lightBlue" parent="Base.TextAppearance.AppCompat.Button" >
+        <item name="backgroundTint">@color/colorLightBlue</item>
+    </style>
+    <style name="Blue" parent="Base.TextAppearance.AppCompat.Button" >
+        <item name="backgroundTint">@color/colorBlue</item>
+    </style>
+
+    <style name="ToolbarStyle" parent="@style/Widget.AppCompat.Toolbar">
+        <item name="contentInsetStart">0dp</item>
+    </style>
+
 </resources>

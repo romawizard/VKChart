@@ -1,29 +1,78 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frame_layout_dialog"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ru.roma.vkchart.ui.fragment.DialogsFragment"
-    android:id="@+id/frame_layout_dialog">
+    android:orientation="vertical"
+    tools:context="ru.roma.vkchart.ui.fragment.DialogsFragment">
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swiperefresh"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+    <include layout="@layout/toolbar_mesage" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swiperefresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/line_bottom">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/list_messages"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/colorGray">
+
+            </android.support.v7.widget.RecyclerView>
 
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/list_messages"
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+        <LinearLayout
+            android:id="@+id/line_bottom"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colorGray"
-            android:layout_weight="1">
-
-        </android.support.v7.widget.RecyclerView>
-
-    </android.support.v4.widget.SwipeRefreshLayout>
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:minHeight="50dp"
+            android:orientation="horizontal">
 
 
+            <Button
+                android:id="@+id/chose_media"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="4dp"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/attach_selector" />
 
-    <!--<include layout="@layout/content_main2" />-->
 
-</FrameLayout>
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/text_msg"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:hint="@string/enter_message"
+                android:inputType="textMultiLine"
+                android:maxLines="4"
+                android:textCursorDrawable="@drawable/color_cursor"
+                app:backgroundTint="@color/colorBlue" />
+
+            <Button
+                android:id="@+id/send"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="bottom"
+                android:background="@drawable/ic_action_send"
+                android:gravity="center"
+                style="@style/Blue"
+                />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</LinearLayout>

@@ -24,4 +24,9 @@ public class UseCaseModule {
     LoadMessageUseCase provideLoadMessageUseCase(DataSource<List<Message>,Integer> dataSource){
         return  new LoadMessageUseCase(dataSource);
     }
+
+    @Provides
+    SendMessageUseCase provideSendMessageUseCase(DataSource<Integer,Message> dataSource){
+        return new SendMessageUseCase(dataSource);
+    }
 }

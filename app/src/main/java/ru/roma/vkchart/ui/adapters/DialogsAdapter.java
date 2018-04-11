@@ -78,7 +78,7 @@ public class DialogsAdapter extends RecyclerView.Adapter<DialogsAdapter.ViewHold
     public class ViewHolderDialog extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView name, text, time;
-        CircleImageView photoDialog, photoOwner;
+        CircleImageView photoDialog, photoOwner, imageOnline;
         CardView cardView;
         ImageView unread;
 
@@ -91,6 +91,7 @@ public class DialogsAdapter extends RecyclerView.Adapter<DialogsAdapter.ViewHold
             time = itemView.findViewById(R.id.time_dialog);
             cardView = itemView.findViewById(R.id.item_dialog_card);
             unread = itemView.findViewById(R.id.unread);
+            imageOnline = itemView.findViewById(R.id.online);
 
             itemView.setOnClickListener(this);
         }
@@ -108,6 +109,8 @@ public class DialogsAdapter extends RecyclerView.Adapter<DialogsAdapter.ViewHold
             setText(dialog);
 
             checkReadState(dialog);
+
+            setOnlimeImage(dialog);
         }
 
         private void checkReadState(Dialog dialog) {
@@ -182,6 +185,15 @@ public class DialogsAdapter extends RecyclerView.Adapter<DialogsAdapter.ViewHold
             }
 
             name.setText(sb.toString());
+        }
+
+        private void setOnlimeImage(Dialog dialog){
+            int online = dialog.getOnline();
+            if (online == 1){
+                imageOnline.setVisibility(View.VISIBLE);
+            }else {
+                imageOnline.setVisibility(View.GONE);
+            }
         }
 
         @Override

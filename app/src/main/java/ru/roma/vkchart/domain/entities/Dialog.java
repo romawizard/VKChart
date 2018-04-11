@@ -3,6 +3,7 @@ package ru.roma.vkchart.domain.entities;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import java.util.List;
 
@@ -191,6 +192,14 @@ public class Dialog {
 
     public void setOnline(int online) {
         this.online = online;
+    }
+
+    public String getUserName(){
+        if (TextUtils.isEmpty(getTitle())){
+            return getFirstName() + " " + getLastName();
+        }else {
+            return getTitle();
+        }
     }
 
     @Override

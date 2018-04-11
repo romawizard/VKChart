@@ -100,14 +100,18 @@ public class DialogPresenter {
 
                 @Override
                 public void onNext(@NonNull List<Dialog> dialogs) {
-                    view.updateList(dialogs);
+                    if (view != null) {
+                        view.updateList(dialogs);
+                    }
                     loading = false;
                 }
 
                 @Override
                 public void onError(@NonNull Throwable e) {
                     e.printStackTrace();
-                    view.showError("error");
+                    if (view != null) {
+                        view.showError("ошибка при загрузке диалогов");
+                    }
                     loading = false;
                 }
 

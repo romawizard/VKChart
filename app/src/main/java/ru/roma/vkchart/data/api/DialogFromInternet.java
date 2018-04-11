@@ -1,12 +1,17 @@
 package ru.roma.vkchart.data.api;
 
 
+import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.roma.vkchart.data.api.model_response.SendMessageModelresponse;
 import ru.roma.vkchart.ui.MyApplication;
 import ru.roma.vkchart.data.api.model_response.ItemMessage;
 import ru.roma.vkchart.data.api.model_response.MessageModelResponse;
@@ -35,7 +40,7 @@ public class DialogFromInternet implements ApiProvider {
 
     private Pagination<Dialog> dialogesPagination;
     private Pagination<ru.roma.vkchart.domain.entities.Message> messagePagination;
-    private   String token;
+    private String token;
 
     public DialogFromInternet() {
         dialogesPagination = new Pagination<>(20);
@@ -62,6 +67,25 @@ public class DialogFromInternet implements ApiProvider {
         MessageModelResponse response = MyApplication.getInstance().getQuery().getMwsages(userId,messagePagination.getOffset(),token)
                 .execute().body();
         return messagePagination.next(parseToMessage(response));
+    }
+
+    @Override
+    public Integer sendMessage(ru.roma.vkchart.domain.entities.Message message) throws Exception {
+
+        String text = message.getBody();
+        int id = message.getUserId();
+
+        try {
+            text = URLEncoder.encode(text, "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            MyLog.log("кодировка не прошла");
+        }
+
+        MyLog.log("send message = " );
+        SendMessageModelresponse response = MyApplication.getInstance().getQuery().sendMessage(id,text,token)
+                .execute().body();
+        return response.getResponse();
     }
 
     private List<ru.roma.vkchart.domain.entities.Message> parseToMessage(MessageModelResponse response) {

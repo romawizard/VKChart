@@ -26,4 +26,9 @@ public class DataSourceModule {
     DataSource<List<Message>,Integer> provideMessageDataSource(DeviceStateProvider stateProvider, ApiProvider apiProvider, DbProvider dbProvider){
         return  new MessageDataSource(stateProvider,apiProvider,dbProvider);
     }
+
+    @Provides
+    DataSource<Integer,Message> provideSendMessageDataSource(DeviceStateProvider stateProvider, ApiProvider apiProvider, DbProvider dbProvider){
+        return  new SendMessageDataSource(stateProvider,apiProvider,dbProvider);
+    }
 }

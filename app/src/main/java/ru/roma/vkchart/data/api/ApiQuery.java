@@ -5,6 +5,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 import ru.roma.vkchart.data.api.model_response.DialogModelResponse;
 import ru.roma.vkchart.data.api.model_response.MessageModelResponse;
+import ru.roma.vkchart.data.api.model_response.SendMessageModelresponse;
 
 /**
  * Created by Ilan on 25.02.2018.
@@ -22,5 +23,9 @@ public interface ApiQuery {
     Call<MessageModelResponse> getMwsages(@Query("user_id")int userId,@Query("offset")int offset
             ,@Query("access_token")String token);
 
+
+    @GET("messages.send?&v="+ VERSION )
+    Call<SendMessageModelresponse> sendMessage(@Query("user_id")int userId,@Query("message")String message
+            ,@Query("access_token")String token);
 
 }

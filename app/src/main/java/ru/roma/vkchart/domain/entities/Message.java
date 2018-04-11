@@ -1,8 +1,10 @@
 package ru.roma.vkchart.domain.entities;
 
+import java.util.Date;
 import java.util.List;
 
 import ru.roma.vkchart.data.api.model_response.Attachment;
+import ru.roma.vkchart.utils.MyLog;
 
 /**
  * Created by Ilan on 01.04.2018.
@@ -19,6 +21,20 @@ public class Message {
     private Integer chatId;
     private String body;
     private List<Attachment> attachments = null;
+
+    public Message( String body,int userId) {
+        out = 1;
+
+        Date date = new Date();
+        long unixDate = date.getTime()/1000L;
+        MyLog.log("time = "+ unixDate);
+        this.date = (int)unixDate;
+        this.body = body;
+        this.userId = userId;
+    }
+
+    public Message() {
+    }
 
     public Integer getUserId() {
         return userId;
