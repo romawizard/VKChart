@@ -75,7 +75,7 @@ public class MessagePresenter {
         view = null;
     }
 
-    public void sendMessage(Message message) {
+    public void sendMessage(final Message message) {
         if (!loading){
             loading = true;
             asynUseCase.wrap(sendmessageUseCase,message).subscribe(new Observer<Integer>() {
@@ -86,16 +86,19 @@ public class MessagePresenter {
 
                 @Override
                 public void onNext(@NonNull Integer integer) {
-                    view.showError("send Message = " + integer);
+                    message.setId(integer);
+                    message.setSent(true);
+                    view.update();
                     loading = false;
                 }
 
                 @Override
                 public void onError(@NonNull Throwable e) {
                     e.printStackTrace();
+                    message.setErorr(true);
+                    view.update();
                     view.showError("ощибка при отправке сообщения");
                     loading = false;
-
                 }
 
                 @Override

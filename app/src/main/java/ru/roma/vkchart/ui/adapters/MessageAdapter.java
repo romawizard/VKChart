@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -57,12 +58,17 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         MyLog.log("add message to adapter time = " + message.getDate());
     }
 
+    public void adtate() {
+        notifyDataSetChanged();
+    }
+
     public class ViewHolderMessage extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView msgLeft, msgRight, timeLeft, timeRight;
         TimeHalper timeHelper;
         RelativeLayout mainLeft;
         LinearLayout mainRight;
+        ImageView indicator;
 
 
         public ViewHolderMessage(View itemView) {
@@ -74,10 +80,41 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             timeRight = itemView.findViewById(R.id.time_right);
             mainLeft = itemView.findViewById(R.id.main_left);
             mainRight = itemView.findViewById(R.id.main_right);
+            indicator = itemView.findViewById(R.id.indicator);
         }
 
         public void bind(Message message) {
             showListMessage(message);
+            showIndicator(message);
+        }
+
+        private void showIndicator(Message message) {
+
+            if (message.getOut() == 1){
+//                исходяшие сообшение
+                if (message.isErorr()){
+//                    ошибка при отправке сообщения
+                    indicator.setVisibility(View.VISIBLE);
+                    indicator.setImageResource(R.drawable.error);
+                    return;
+                }
+                if (!message.isSent()){
+//                    сообщение оправлено но не пришело подтверждение от сервера
+                    indicator.setImageResource(R.drawable.clock);
+                    indicator.setVisibility(View.VISIBLE);
+                }else {
+                    if (message.getReadState() == 0){
+//                        подтвержина отправка на сервер, но сообщение не прочитано
+                        MyLog.log("blue circle");
+                        indicator.setImageResource(R.drawable.circle);
+                        indicator.setVisibility(View.VISIBLE);
+                    }
+                    else {
+//                        подтвержина отправка на сервер, сообщение  прочитано
+                        indicator.setVisibility(View.GONE);
+                    }
+                }
+            }
         }
 
 

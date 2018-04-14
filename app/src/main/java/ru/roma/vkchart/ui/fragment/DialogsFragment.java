@@ -183,6 +183,11 @@ public class DialogsFragment extends Fragment implements SwipeRefreshLayout.OnRe
         Toast.makeText(getContext(),message,Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void update() {
+
+    }
+
 
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Bundle user);

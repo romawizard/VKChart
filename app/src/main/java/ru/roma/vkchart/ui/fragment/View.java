@@ -12,4 +12,5 @@ public interface View<T> {
 
     void updateList(List<T> list);
     void showError(String message);
+    void update();
 }

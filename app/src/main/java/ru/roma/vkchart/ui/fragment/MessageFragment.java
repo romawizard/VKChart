@@ -141,6 +141,11 @@ public class MessageFragment extends Fragment implements ru.roma.vkchart.ui.frag
     }
 
     @Override
+    public void update() {
+        adapter.adtate();
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         recycleViewState = listMessages.getLayoutManager().onSaveInstanceState();

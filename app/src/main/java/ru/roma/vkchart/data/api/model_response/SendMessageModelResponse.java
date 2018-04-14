@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by Ilan on 08.04.2018.
  */
 
-public class SendMessageModelresponse {
+public class SendMessageModelResponse {
 
     @SerializedName("response")
     @Expose

@@ -7,6 +7,6 @@ package ru.roma.vkchart.utils;
 public class Keys {
 
     public final static  String MAINPREF = "mainPref";
-
     public final static  String TOKEN = "token";
+    public final static  String TOKEN_NOTIF = "tokenNotif";
 }

@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.roma.vkchart.data.api.model_response.SendMessageModelresponse;
+import ru.roma.vkchart.data.api.model_response.SendMessageModelResponse;
 import ru.roma.vkchart.ui.MyApplication;
 import ru.roma.vkchart.data.api.model_response.ItemMessage;
 import ru.roma.vkchart.data.api.model_response.MessageModelResponse;
@@ -70,16 +70,9 @@ public class DialogFromInternet implements ApiProvider {
 
         String text = message.getBody();
         int id = message.getUserId();
-//
-//        try {
-//            text = URLEncoder.encode(text, "utf-8");
-//        } catch (UnsupportedEncodingException e) {
-//            e.printStackTrace();
-//            MyLog.log("кодировка не прошла");
-//        }
 
-        MyLog.log("send message = " );
-        SendMessageModelresponse response = MyApplication.getInstance().getQuery().sendMessage(id,text,token)
+        MyLog.log("send message = " + text );
+        SendMessageModelResponse response = MyApplication.getInstance().getQuery().sendMessage(id,text,token)
                 .execute().body();
         return response.getResponse();
     }

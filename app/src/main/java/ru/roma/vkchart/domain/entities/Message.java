@@ -21,16 +21,18 @@ public class Message {
     private Integer chatId;
     private String body;
     private List<Attachment> attachments = null;
+    private  boolean sent = true;
+    private  boolean erorr = false;
 
     public Message( String body,int userId) {
-        out = 1;
-
         Date date = new Date();
         long unixDate = date.getTime()/1000L;
-        MyLog.log("time = "+ unixDate);
         this.date = (int)unixDate;
         this.body = body;
         this.userId = userId;
+        this.readState = 0;
+        this.out = 1;
+        this.sent = false;
     }
 
     public Message() {
@@ -106,6 +108,22 @@ public class Message {
 
     public void setAttachments(List<Attachment> attachments) {
         this.attachments = attachments;
+    }
+
+    public boolean isSent() {
+        return sent;
+    }
+
+    public void setSent(boolean sent) {
+        this.sent = sent;
+    }
+
+    public boolean isErorr() {
+        return erorr;
+    }
+
+    public void setErorr(boolean erorr) {
+        this.erorr = erorr;
     }
 
     @Override

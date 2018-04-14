@@ -42,41 +42,48 @@
         android:id="@+id/main_right"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layoutDirection="rtl">
+        android:layoutDirection="rtl"
+        android:orientation="horizontal">
 
-    <RelativeLayout
-
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/input_right"
-        style="@style/lightBlue">
+        <RelativeLayout
 
 
-        <TextView
-            android:id="@+id/msg_right"
+            style="@style/lightBlue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:maxWidth="230dp"
-            android:layout_alignParentRight="true"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:gravity="right|center_vertical"
-            android:layoutDirection="rtl"
-            android:minWidth="40dp"/>
+            android:background="@drawable/input_right">
 
-        <TextView
-            android:id="@+id/time_right"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorBlue"
-            android:maxLines="1"
-            android:layout_below="@id/msg_right"
-            android:layout_alignLeft="@id/msg_right"
-            android:textSize="10sp" />
 
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/msg_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:gravity="right|center_vertical"
+                android:layoutDirection="rtl"
+                android:maxWidth="230dp"
+                android:minWidth="40dp"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/time_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/msg_right"
+                android:layout_below="@id/msg_right"
+                android:maxLines="1"
+                android:textColor="@color/colorBlue"
+                android:textSize="10sp" />
+
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/indicator"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="5dp"/>
 
     </LinearLayout>
 
