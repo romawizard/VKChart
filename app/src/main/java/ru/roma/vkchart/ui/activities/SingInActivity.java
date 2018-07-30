@@ -1,8 +1,8 @@
 package ru.roma.vkchart.ui.activities;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 
 import com.vk.sdk.VKAccessToken;
@@ -25,6 +25,8 @@ public class SingInActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_sing_in);
 
         String myToken = getSharedPreferences(Keys.MAINPREF, MODE_PRIVATE).getString(Keys.TOKEN, null);
+
+        MyLog.log("TOKEN " + myToken);
         if (TextUtils.isEmpty(myToken)) {
             // первый вход в приложение
 

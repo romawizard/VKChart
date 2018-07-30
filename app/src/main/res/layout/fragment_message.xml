@@ -7,7 +7,6 @@
     android:orientation="vertical"
     tools:context="ru.roma.vkchart.ui.fragment.DialogsFragment">
 
-    <include layout="@layout/toolbar_mesage" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -64,13 +63,12 @@
 
             <Button
                 android:id="@+id/send"
+                style="@style/Blue"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_gravity="bottom"
                 android:background="@drawable/ic_action_send"
-                android:gravity="center"
-                style="@style/Blue"
-                />
+                android:gravity="center" />
 
         </LinearLayout>
 

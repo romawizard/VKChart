@@ -14,10 +14,10 @@ import java.util.Collections;
 import java.util.List;
 
 import ru.roma.vkchart.R;
-import ru.roma.vkchart.domain.entities.Message;
+import ru.roma.vkchart.ui.ui_item.MessageUIItem;
 import ru.roma.vkchart.utils.MessageDateComparator;
 import ru.roma.vkchart.utils.MyLog;
-import ru.roma.vkchart.utils.TimeHalper;
+import ru.roma.vkchart.utils.TimeHelper;
 
 /**
  * Created by Ilan on 01.04.2018.
@@ -25,7 +25,7 @@ import ru.roma.vkchart.utils.TimeHalper;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolderMessage> {
 
-    List<Message> messages;
+    private List<MessageUIItem> messages;
 
     @Override
     public ViewHolderMessage onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -43,7 +43,13 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     public int getItemCount() {
         return messages == null ? 0 : messages.size();
     }
-    public void setListMesages(List<Message> list) {
+
+
+    public MessageUIItem getMessage(int position) {
+        return messages.get(position);
+    }
+
+    public void setListMessages(List<MessageUIItem> list) {
         if (list != null) {
             messages = list;
             notifyDataSetChanged();
@@ -51,29 +57,28 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         }
     }
 
-    public void addMessage(Message message) {
+    public void addMessage(MessageUIItem message) {
         messages.add(message);
         Collections.sort(messages, new MessageDateComparator());
         notifyDataSetChanged();
         MyLog.log("add message to adapter time = " + message.getDate());
     }
 
-    public void adtate() {
-        notifyDataSetChanged();
-    }
 
-    public class ViewHolderMessage extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolderMessage extends RecyclerView.ViewHolder {
 
-        TextView msgLeft, msgRight, timeLeft, timeRight;
-        TimeHalper timeHelper;
-        RelativeLayout mainLeft;
-        LinearLayout mainRight;
-        ImageView indicator;
+        private TextView msgLeft, msgRight, timeLeft, timeRight;
+        private TimeHelper timeHelper;
+        private RelativeLayout mainLeft;
+        private LinearLayout mainRight;
+        private ImageView indicator;
+        private View itemView;
 
 
         public ViewHolderMessage(View itemView) {
             super(itemView);
-            timeHelper = new TimeHalper();
+            this.itemView = itemView;
+            timeHelper = new TimeHelper();
             msgLeft = itemView.findViewById(R.id.msg_left);
             msgRight = itemView.findViewById(R.id.msg_right);
             timeLeft = itemView.findViewById(R.id.time_left);
@@ -81,62 +86,61 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             mainLeft = itemView.findViewById(R.id.main_left);
             mainRight = itemView.findViewById(R.id.main_right);
             indicator = itemView.findViewById(R.id.indicator);
+
         }
 
-        public void bind(Message message) {
+        public void bind(MessageUIItem message) {
             showListMessage(message);
             showIndicator(message);
         }
 
-        private void showIndicator(Message message) {
-
-            if (message.getOut() == 1){
+        private void showIndicator(MessageUIItem message) {
+            if (message.getOut() == 1) {
 //                исходяшие сообшение
-                if (message.isErorr()){
+                if (message.isError()) {
 //                    ошибка при отправке сообщения
                     indicator.setVisibility(View.VISIBLE);
-                    indicator.setImageResource(R.drawable.error);
+                    indicator.setImageResource(R.mipmap.error);
                     return;
                 }
-                if (!message.isSent()){
+                if (!message.isSent()) {
 //                    сообщение оправлено но не пришело подтверждение от сервера
-                    indicator.setImageResource(R.drawable.clock);
+                    indicator.setImageResource(R.mipmap.clock);
                     indicator.setVisibility(View.VISIBLE);
-                }else {
-                    if (message.getReadState() == 0){
+                } else {
+                    if (message.getReadState() == 0) {
 //                        подтвержина отправка на сервер, но сообщение не прочитано
                         MyLog.log("blue circle");
-                        indicator.setImageResource(R.drawable.circle);
+                        indicator.setImageResource(R.mipmap.circle);
                         indicator.setVisibility(View.VISIBLE);
-                    }
-                    else {
-//                        подтвержина отправка на сервер, сообщение  прочитано
+                    } else {
+//                        подтвержена отправка на сервер, сообщение  прочитано
                         indicator.setVisibility(View.GONE);
                     }
                 }
             }
         }
 
-
-        private void showListMessage(Message message) {
+        private void showListMessage(MessageUIItem message) {
 
             int out = message.getOut();
-            if (out == 1){
+            if (out == 1) {
                 mainRight.setVisibility(View.VISIBLE);
                 msgRight.setText(message.getBody());
                 timeRight.setText(timeHelper.getTime(message.getDate()));
                 mainLeft.setVisibility(View.GONE);
-            }else {
+            } else {
                 mainLeft.setVisibility(View.VISIBLE);
                 msgLeft.setText(message.getBody());
                 timeLeft.setText(timeHelper.getTime(message.getDate()));
                 mainRight.setVisibility(View.GONE);
             }
-        }
 
-        @Override
-        public void onClick(View view) {
-
+            if (message.isCheck()) {
+                itemView.setBackgroundColor(itemView.getResources().getColor(R.color.colorLightBlue));
+            } else {
+                itemView.setBackgroundColor(itemView.getResources().getColor(R.color.colorGray));
+            }
         }
     }
 }

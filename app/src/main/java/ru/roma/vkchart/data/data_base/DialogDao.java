@@ -9,6 +9,7 @@ import android.arch.persistence.room.Update;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
 import ru.roma.vkchart.domain.entities.Dialog;
 
 /**
@@ -18,10 +19,10 @@ import ru.roma.vkchart.domain.entities.Dialog;
 public interface DialogDao {
 
     @Query("SELECT * FROM Dialog")
-    List<Dialog> getAll();
+    Flowable<List<Dialog>> getAllDialogs();
 
     @Query("SELECT * FROM Dialog WHERE userId = :id")
-    Dialog getById(int id);
+    Flowable<Dialog> getDialogById(int id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Dialog employee);

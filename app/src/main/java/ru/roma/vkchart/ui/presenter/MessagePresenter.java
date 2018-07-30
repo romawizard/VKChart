@@ -4,108 +4,84 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import io.reactivex.Observer;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.Disposable;
-import ru.roma.vkchart.domain.entities.Message;
-import ru.roma.vkchart.domain.usecase.AsynUseCase;
-import ru.roma.vkchart.domain.usecase.LoadMessageUseCase;
+import io.reactivex.observers.DisposableObserver;
+import ru.roma.vkchart.domain.usecase.GetMessagesUseCase;
 import ru.roma.vkchart.domain.usecase.SendMessageUseCase;
-import ru.roma.vkchart.ui.MyApplication;
-import ru.roma.vkchart.ui.fragment.View;
+import ru.roma.vkchart.ui.ui_item.MessageUIItem;
 
 /**
  * Created by Ilan on 01.04.2018.
  */
 
-public class MessagePresenter {
+public class MessagePresenter extends Presenter<MessagePresenter.MessageView > {
+
+    private GetMessagesUseCase getMessagesUseCase;
+    private SendMessageUseCase sendmessageUseCase;
 
     @Inject
-    LoadMessageUseCase loadMessageUseCase;
-    @Inject
-    AsynUseCase asynUseCase;
-    @Inject
-    SendMessageUseCase sendmessageUseCase;
-    private View view;
-    private boolean loading = false;
-
-    public MessagePresenter(View view) {
-        this.view = view;
-        MyApplication.getInstance().getAppComponent().injectMessagePresenter(this);
+    public MessagePresenter(GetMessagesUseCase getMessagesUseCase, SendMessageUseCase sendmessageUseCase) {
+        this.getMessagesUseCase = getMessagesUseCase;
+        this.sendmessageUseCase = sendmessageUseCase;
     }
 
     public void getMessages(int userId) {
-        if (!loading) {
-            loading = true;
-            asynUseCase.wrap(loadMessageUseCase, userId).subscribe(new Observer<List<Message>>() {
+        getMessagesUseCase.setUserId(userId);
+        getView().showLoading();
+        getMessagesUseCase.execute(new DisposableObserver<List<MessageUIItem>>() {
+            @Override
+            public void onNext(List<MessageUIItem> messageUIItems) {
+                getView().updateList(messageUIItems);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                e.printStackTrace();
+                getView().showError("ошибка при загрузке сообщений");
+                getView().hideLoading();
+            }
+
+            @Override
+            public void onComplete() {
+                getView().hideLoading();
+            }
+        });
+    }
 
 
-                @Override
-                public void onSubscribe(@NonNull Disposable d) {
 
-                }
+    public void sendMessage(final MessageUIItem message) {
+        sendmessageUseCase.addMessage(message);
+        sendmessageUseCase.execute(new DisposableObserver<Integer>() {
+            @Override
+            public void onNext(Integer integer) {
+                message.setId(integer);
+                message.setSent(true);
+                getView().update();
+            }
 
-                @Override
-                public void onNext(@NonNull List<Message> messages) {
-                    if (view != null) {
-                        view.updateList(messages);
-                    }
-                    loading = false;
-                }
+            @Override
+            public void onError(Throwable e) {
+                e.printStackTrace();
+                message.setError(true);
+                getView().update();
+                getView().showError(e.getMessage());
+            }
 
-                @Override
-                public void onError(@NonNull Throwable e) {
-                    e.printStackTrace();
-                    if (view != null) {
-                        view.showError("ошибка при загрузке сообщений");
-                    }
-                    loading = false;
-                }
+            @Override
+            public void onComplete() {
 
-                @Override
-                public void onComplete() {
-                    loading = false;
-                }
-            });
-        }
-
+            }
+        });
     }
 
     public void detach() {
-        view = null;
+        setView(null);
+        getMessagesUseCase.dispose();
+        sendmessageUseCase.dispose();
     }
 
-    public void sendMessage(final Message message) {
-        if (!loading){
-            loading = true;
-            asynUseCase.wrap(sendmessageUseCase,message).subscribe(new Observer<Integer>() {
-                @Override
-                public void onSubscribe(@NonNull Disposable d) {
+    public interface MessageView extends Presenter.View{
 
-                }
-
-                @Override
-                public void onNext(@NonNull Integer integer) {
-                    message.setId(integer);
-                    message.setSent(true);
-                    view.update();
-                    loading = false;
-                }
-
-                @Override
-                public void onError(@NonNull Throwable e) {
-                    e.printStackTrace();
-                    message.setErorr(true);
-                    view.update();
-                    view.showError("ощибка при отправке сообщения");
-                    loading = false;
-                }
-
-                @Override
-                public void onComplete() {
-                    loading = false;
-                }
-            });
-        }
+        void updateList(List<MessageUIItem> messageUIItems);
     }
 }

@@ -1,129 +1,60 @@
 package ru.roma.vkchart.ui.presenter;
 
 
-
 import java.util.List;
 
 import javax.inject.Inject;
 
-import io.reactivex.Observer;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.Disposable;
-import ru.roma.vkchart.ui.MyApplication;
+import io.reactivex.observers.DisposableObserver;
 import ru.roma.vkchart.domain.entities.Dialog;
-import ru.roma.vkchart.domain.usecase.AsynUseCase;
-import ru.roma.vkchart.domain.usecase.LoadDialogsUseCase;
-import ru.roma.vkchart.ui.fragment.View;
+import ru.roma.vkchart.domain.usecase.GetDialogsUseCase;
 
 
 /**
  * Created by Ilan on 24.02.2018.
  */
 
-public class DialogPresenter {
+public class DialogPresenter extends Presenter<DialogPresenter.DialogView> {
 
-//    @Inject
-//    DialogDomain domain;
+    private GetDialogsUseCase getDialogsUseCase;
+
     @Inject
-    LoadDialogsUseCase loadDialogsUseCase;
-    @Inject
-    AsynUseCase asynUseCase;
-    private View view;
-    private boolean loading = false;
-
-
-    public DialogPresenter(View view) {
-        this.view = view;
-        MyApplication.getInstance().getAppComponent().injectDialogPresenter(this);
+    public DialogPresenter(GetDialogsUseCase getDialogsUseCase) {
+        this.getDialogsUseCase = getDialogsUseCase;
     }
 
-    public void detach(){
-        view = null;
+    public void getDialogs(int offset) {
+        getView().showLoading();
+        getDialogsUseCase.setOffset(offset);
+        getDialogsUseCase.execute(new DisposableObserver<List<Dialog>>() {
+            @Override
+            public void onNext(List<Dialog> dialogs) {
+                getView().updateListDialogs(dialogs);
+                getView().hideLoading();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                e.printStackTrace();
+                getView().showError(e.getMessage());
+                getView().hideLoading();
+            }
+
+            @Override
+            public void onComplete() {
+                getView().hideLoading();
+            }
+        });
     }
 
-//    public void getDialogs() {
-//
-//        if (!loading) {
-//            loading = true;
-//
-//            io.reactivex.Observable.fromCallable(new Callable<List<Dialog>>() {
-//                @Override
-//                public List<Dialog> call() throws Exception {
-//                    return domain.getListDialog();
-//                }
-//            })
-//                    .subscribeOn(Schedulers.io())
-//                    .observeOn(AndroidSchedulers.mainThread())
-//                    .subscribe(new Observer<List<Dialog>>() {
-//                        @Override
-//                        public void onSubscribe(@NonNull Disposable d) {
-//                            MyLog.log("onSubscribe");
-//                        }
-//
-//                        @Override
-//                        public void onNext(@NonNull List<Dialog> dialogsHolders) {
-//
-//                            view.updateList(dialogsHolders);
-//                            loading = false;
-//                        }
-//
-//                        @Override
-//                        public void onError(@NonNull Throwable e) {
-//                            e.printStackTrace();
-//                            if (e instanceof IOException){
-//                                view.showError("ошибка при загрузке данных");
-//                            }else {
-//                                view.showError("ошибка BD");
-//                            }
-//                            loading = false;
-//
-//                        }
-//
-//                        @Override
-//                        public void onComplete() {
-//                            loading = false;
-//                        }
-//                    });
-//        }
-//    }
-
-    public void getDialogs(){
-        if (!loading) {
-
-            loading = true;
-
-            asynUseCase.wrap(loadDialogsUseCase).subscribe(new Observer<List<Dialog>>() {
-                @Override
-                public void onSubscribe(@NonNull Disposable d) {
-
-                }
-
-                @Override
-                public void onNext(@NonNull List<Dialog> dialogs) {
-                    if (view != null) {
-                        view.updateList(dialogs);
-                    }
-                    loading = false;
-                }
-
-                @Override
-                public void onError(@NonNull Throwable e) {
-                    e.printStackTrace();
-                    if (view != null) {
-                        view.showError("ошибка при загрузке диалогов");
-                    }
-                    loading = false;
-                }
-
-                @Override
-                public void onComplete() {
-                    loading = false;
-                }
-            });
-        }
+    @Override
+    public void detach() {
+        getDialogsUseCase.dispose();
+        setView(null);
     }
 
-    public void ready() {
+    public interface DialogView extends Presenter.View{
+         void updateListDialogs(List<Dialog> dialogs);
+     }
 
-    }
 }

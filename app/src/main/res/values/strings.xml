@@ -7,7 +7,17 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_scrolling">ScrollingActivity</string>
-    <string name="large_text">
+    <string name="large_text"> </string>
+
+    <string name="action_settings">Settings</string>
+    <string name="messages">Сообщения</string>
+    <string name="update">Обновление</string>
+    <string name="search">Поиск</string>
+    <string name="remove">Удалить</string>
+    <string name="online">online</string>
+    <string name="enter_message">Ваше сообщение</string>
+    <string name="close">закрыть</string>
+    <string name="count">количество</string>
         "Material is the metaphor.\n\n"
 
         "A material metaphor is the unifying theory of a rationalized space and a system of motion."
@@ -95,11 +105,6 @@
         "On the layout level, design your app layout to minimize opportunities for interference. "
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
-    </string>
-    <string name="action_settings">Settings</string>
-    <string name="messages">Сообщения</string>
-    <string name="search">Поиск</string>
-    <string name="remove">Удалить</string>
-    <string name="online">online</string>
-    <string name="enter_message">Ваше сообщение</string>
+
+
 </resources>

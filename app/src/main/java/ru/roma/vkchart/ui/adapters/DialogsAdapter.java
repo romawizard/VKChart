@@ -17,10 +17,10 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import ru.roma.vkchart.R;
-import ru.roma.vkchart.ui.MyApplication;
 import ru.roma.vkchart.domain.entities.Dialog;
+import ru.roma.vkchart.ui.MyApplication;
 import ru.roma.vkchart.utils.MyLog;
-import ru.roma.vkchart.utils.TimeHalper;
+import ru.roma.vkchart.utils.TimeHelper;
 
 
 /**
@@ -29,13 +29,13 @@ import ru.roma.vkchart.utils.TimeHalper;
 
 public class DialogsAdapter extends RecyclerView.Adapter<DialogsAdapter.ViewHolderDialog> {
 
-    private List<Dialog> dialogses;
-    private OnItemClickListener listener;
     private int colorWhite;
     private int colorLightBlue;
+    private List<Dialog> dialogs;
+    private OnItemClickListener listener;
 
     public DialogsAdapter() {
-        dialogses = new ArrayList<>();
+        dialogs = new ArrayList<>();
     }
 
     @Override
@@ -49,25 +49,26 @@ public class DialogsAdapter extends RecyclerView.Adapter<DialogsAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolderDialog holder, int position) {
-
-        holder.bind(dialogses.get(position));
-
+        holder.bind(dialogs.get(position));
     }
-
 
     @Override
     public int getItemCount() {
-        return dialogses == null ? 0 : dialogses.size();
+        return dialogs == null ? 0 : dialogs.size();
     }
 
     public void setListDialogs(List<Dialog> list) {
-        dialogses = list;
-        notifyDataSetChanged();
-        MyLog.log("list size adapter = " + dialogses.size());
+        dialogs = list;
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
+    }
+
+    public List<Dialog> getData() {
+        return dialogs;
+
+
     }
 
     public interface OnItemClickListener {
@@ -110,7 +111,7 @@ public class DialogsAdapter extends RecyclerView.Adapter<DialogsAdapter.ViewHold
 
             checkReadState(dialog);
 
-            setOnlimeImage(dialog);
+            setOnlineImage(dialog);
         }
 
         private void checkReadState(Dialog dialog) {
@@ -166,7 +167,7 @@ public class DialogsAdapter extends RecyclerView.Adapter<DialogsAdapter.ViewHold
 
             long unixTime = dialog.getDate();
 
-            String result = new TimeHalper().getTime(unixTime);
+            String result = new TimeHelper().getTime(unixTime);
 
             time.setText(result);
         }
@@ -175,10 +176,10 @@ public class DialogsAdapter extends RecyclerView.Adapter<DialogsAdapter.ViewHold
 
             StringBuilder sb = new StringBuilder();
 
-            String titel = dialog.getTitle();
+            String title = dialog.getTitle();
 
-            if (!TextUtils.isEmpty(titel)) {
-                sb.append(titel);
+            if (!TextUtils.isEmpty(title)) {
+                sb.append(title);
             } else {
 
                 sb.append(dialog.getFirstName() + " " + dialog.getLastName());
@@ -187,7 +188,7 @@ public class DialogsAdapter extends RecyclerView.Adapter<DialogsAdapter.ViewHold
             name.setText(sb.toString());
         }
 
-        private void setOnlimeImage(Dialog dialog){
+        private void setOnlineImage(Dialog dialog){
             int online = dialog.getOnline();
             if (online == 1){
                 imageOnline.setVisibility(View.VISIBLE);
@@ -198,13 +199,11 @@ public class DialogsAdapter extends RecyclerView.Adapter<DialogsAdapter.ViewHold
 
         @Override
         public void onClick(View view) {
-
             MyLog.log("onClick DialogAdapter");
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION) {
                 if (listener != null) {
-                    listener.onItemClick(dialogses.get(position));
-
+                    listener.onItemClick(dialogs.get(position));
                 }
             }
         }

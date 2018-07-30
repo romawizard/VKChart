@@ -1,24 +1,34 @@
 package ru.roma.vkchart.domain.usecase;
 
-import android.os.Bundle;
+import javax.inject.Inject;
+import javax.inject.Named;
 
-import ru.roma.vkchart.domain.datacource.DataSource;
-import ru.roma.vkchart.domain.entities.Message;
+import io.reactivex.Observable;
+import io.reactivex.Scheduler;
+import ru.roma.vkchart.data.repository.DialogRepository;
+import ru.roma.vkchart.ui.ui_item.MessageUIItem;
 
 /**
  * Created by Ilan on 08.04.2018.
  */
 
-public class SendMessageUseCase implements UseCase<Integer, Message> {
+public class SendMessageUseCase extends UseCase<Integer> {
 
-    DataSource<Integer,Message> dataSource;
+    private final DialogRepository dialogRepository;
 
-    public SendMessageUseCase(DataSource<Integer, Message> dataSource) {
-        this.dataSource = dataSource;
+    @Inject
+    public SendMessageUseCase(@Named("executor_thread") Scheduler executorThread,
+                              @Named("ui_thread") Scheduler uiThread, DialogRepository dialogRepository) {
+        super(executorThread, uiThread);
+        this.dialogRepository = dialogRepository;
     }
 
     @Override
-    public Integer execute(Message message) throws Exception {
-        return dataSource.getData(message);
+    protected Observable<Integer> createObservableUseCase() {
+        return null;
+    }
+
+    public void addMessage(MessageUIItem message) {
+
     }
 }

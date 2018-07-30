@@ -1,17 +1,22 @@
 package ru.roma.vkchart.domain.entities;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
+
 import java.util.Date;
 import java.util.List;
 
 import ru.roma.vkchart.data.api.model_response.Attachment;
-import ru.roma.vkchart.utils.MyLog;
 
 /**
  * Created by Ilan on 01.04.2018.
  */
-
+@Entity
 public class Message {
 
+    @PrimaryKey
+    private Integer messageId;
     private Integer userId;
     private Integer fromId;
     private Integer date;
@@ -20,9 +25,10 @@ public class Message {
     private Integer id;
     private Integer chatId;
     private String body;
+    @Ignore
     private List<Attachment> attachments = null;
     private  boolean sent = true;
-    private  boolean erorr = false;
+    private  boolean error = false;
 
     public Message( String body,int userId) {
         Date date = new Date();
@@ -33,9 +39,18 @@ public class Message {
         this.readState = 0;
         this.out = 1;
         this.sent = false;
+        this.fromId = userId;
     }
 
     public Message() {
+    }
+
+    public Integer getMessageId() {
+        return messageId;
+    }
+
+    public void setMessageId(Integer messageId) {
+        this.messageId = messageId;
     }
 
     public Integer getUserId() {
@@ -118,12 +133,12 @@ public class Message {
         this.sent = sent;
     }
 
-    public boolean isErorr() {
-        return erorr;
+    public boolean isError() {
+        return error;
     }
 
-    public void setErorr(boolean erorr) {
-        this.erorr = erorr;
+    public void setError(boolean error) {
+        this.error = error;
     }
 
     @Override

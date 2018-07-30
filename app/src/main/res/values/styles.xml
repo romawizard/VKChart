@@ -12,21 +12,35 @@
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="lightBlue" parent="Base.TextAppearance.AppCompat.Button" >
+    <style name="lightBlue" parent="Base.TextAppearance.AppCompat.Button">
         <item name="backgroundTint">@color/colorLightBlue</item>
     </style>
-    <style name="Blue" parent="Base.TextAppearance.AppCompat.Button" >
+
+    <style name="Blue" parent="Base.TextAppearance.AppCompat.Button">
         <item name="backgroundTint">@color/colorBlue</item>
     </style>
 
     <style name="ToolbarStyle" parent="@style/Widget.AppCompat.Toolbar">
+
+    </style>
+
+    <style name="AppTheme.NoActionBar.CloseActionBar">
+
+
+        <item name="windowActionModeOverlay">true</item>
+        <item name="actionModeCloseDrawable">@drawable/close</item>
+        <item name="actionModeBackground">@color/colorBlue</item>
         <item name="contentInsetStart">0dp</item>
+        <item name="contentInsetEnd">0dp</item>
+
+
     </style>
 
 </resources>

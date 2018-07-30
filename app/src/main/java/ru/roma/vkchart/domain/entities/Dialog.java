@@ -17,6 +17,8 @@ import ru.roma.vkchart.data.api.model_response.Attachment;
 public class Dialog {
 
     @NonNull
+    private Integer id;
+    @NonNull
     private Integer userId;
     private Integer online;
     private Integer out;
@@ -40,7 +42,14 @@ public class Dialog {
     @Ignore
     private List<Attachment> attachment;
 
+    @NonNull
+    public Integer getId() {
+        return id;
+    }
 
+    public void setId(@NonNull Integer id) {
+        this.id = id;
+    }
 
     public Integer getOut() {
         return out;

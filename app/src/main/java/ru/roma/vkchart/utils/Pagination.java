@@ -24,12 +24,9 @@ public class Pagination<T> {
     public Pagination(int capasityLoad) {
         MAX_LIMIT = capasityLoad;
         cash = new ArrayList<T>();
-
     }
 
-
-    public synchronized  List<T> next(List<T> data ) {
-
+    public synchronized  List<T> next(List<? extends T> data ) {
         if (firstload) {
             cash.addAll(data);
             firstload = false;
@@ -51,7 +48,7 @@ public class Pagination<T> {
         }
         MyLog.log("crossing = " + crossing);
         if (crossing > 0 && crossing < MAX_LIMIT) {
-            Iterator<T> iterator = data.iterator();
+            Iterator<T> iterator = (Iterator<T>) data.iterator();
             while (iterator.hasNext()) {
                 T t = iterator.next();
 

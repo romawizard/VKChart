@@ -9,13 +9,15 @@ import com.vk.sdk.VKAccessTokenTracker;
 import com.vk.sdk.VKSdk;
 
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-import ru.roma.vkchart.ui.activities.SingInActivity;
-import ru.roma.vkchart.data.api.ApiQuery;
+import ru.roma.vkchart.data.api.ApiVK;
 import ru.roma.vkchart.data.data_base.DialogDataBase;
+import ru.roma.vkchart.di.AppComponent;
+import ru.roma.vkchart.di.DaggerAppComponent;
+import ru.roma.vkchart.di.MainModule;
+import ru.roma.vkchart.ui.activities.SingInActivity;
 import ru.roma.vkchart.utils.MyLog;
-import ru.roma.vkchart.domain.usecase.DaggerAppComponent;
-import ru.roma.vkchart.domain.usecase.AppComponent;
 
 /**
  * Created by Ilan on 20.02.2018.
@@ -24,7 +26,7 @@ import ru.roma.vkchart.domain.usecase.AppComponent;
 public class MyApplication extends Application {
 
     private static MyApplication instance;
-    private ApiQuery query;
+    private ApiVK query;
     private DialogDataBase dataBase;
     private AppComponent appComponent;
     private VKAccessTokenTracker vkAccessTokenTracker;
@@ -33,7 +35,7 @@ public class MyApplication extends Application {
         return instance;
     }
 
-    public ApiQuery getQuery() {
+    public ApiVK getApiVK() {
         return query;
     }
 
@@ -51,7 +53,7 @@ public class MyApplication extends Application {
 
         dataBase = Room.databaseBuilder(this,DialogDataBase.class,"dataBase").build();
 
-        appComponent = DaggerAppComponent.create();
+        appComponent = DaggerAppComponent.builder().mainModule(new MainModule()).build();
     }
 
     private VKAccessTokenTracker getVkAccessTokenTracker() {
@@ -80,9 +82,10 @@ public class MyApplication extends Application {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.vk.com/method/")
                 .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
 
-        query = retrofit.create(ApiQuery.class);
+        query = retrofit.create(ApiVK.class);
 
     }
 

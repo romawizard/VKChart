@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
 
@@ -16,24 +15,24 @@
             android:id="@+id/msg_left"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:maxWidth="230dp"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:gravity="center_vertical"
-            android:layout_alignParentTop="true"
             android:layout_alignParentStart="true"
-            android:minWidth="40dp"/>
+            android:layout_alignParentTop="true"
+            android:gravity="center_vertical"
+            android:maxWidth="230dp"
+            android:minWidth="40dp"
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/time_left"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="10sp"
-            android:maxLines="1"
-            android:layout_below="@id/msg_left"
             android:layout_alignRight="@id/msg_left"
+            android:layout_below="@id/msg_left"
+            android:gravity="center_vertical"
+            android:maxLines="1"
             android:textColor="@color/colorBlue"
-            android:gravity="center_vertical" />
+            android:textSize="10sp" />
 
     </RelativeLayout>
 
@@ -80,10 +79,10 @@
 
         <ImageView
             android:id="@+id/indicator"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
             android:layout_gravity="center_vertical"
-            android:layout_marginRight="5dp"/>
+            android:layout_marginRight="5dp" />
 
     </LinearLayout>
 

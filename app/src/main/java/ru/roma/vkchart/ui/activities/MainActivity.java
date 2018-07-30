@@ -1,14 +1,10 @@
 package ru.roma.vkchart.ui.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.roma.vkchart.R;
 import ru.roma.vkchart.ui.fragment.DialogsFragment;
@@ -28,43 +24,24 @@ public class MainActivity extends AppCompatActivity implements DialogsFragment.O
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        if (savedInstanceState == null) {
-            loadFragment();
-        }
-//
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
+        loadFragment();
     }
 
     private void loadFragment() {
-
         FragmentTransaction fTran = getSupportFragmentManager().beginTransaction();
         dialogFragment = (DialogsFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENT_DIALOG);
         if (dialogFragment == null) {
             MyLog.log("null in DialogsFragment");
             dialogFragment = new DialogsFragment();
-
+            fTran.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            fTran.add(R.id.frame_layout, dialogFragment, FRAGMENT_DIALOG).commit();
         }
-        fTran.replace(R.id.frame_layout, dialogFragment, FRAGMENT_DIALOG).commit();
-
     }
 
     @Override
     public void onFragmentInteraction(Bundle user) {
-        FragmentTransaction fTran = getSupportFragmentManager().beginTransaction();
-        messageFragment = (MessageFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENT_MESSAGE);
-        if (messageFragment == null) {
-            MyLog.log("null in MessageFragment");
-            messageFragment = MessageFragment.newInstance(user);
-        }
-        fTran.addToBackStack(FRAGMENT_MESSAGE);
-        fTran.replace(R.id.frame_layout, messageFragment, FRAGMENT_MESSAGE).commit();
+        Intent intent = new Intent(this,MessageActivity.class);
+        intent.putExtras(user);
+        startActivity(intent);
     }
-
 }
